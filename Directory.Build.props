@@ -1,0 +1,45 @@
+<Project>
+  <PropertyGroup>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <Authors>Sébastien Nedjar</Authors>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryRoot>$(MSBuildThisFileDirectory)</RepositoryRoot>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference 
+      Include="StyleCop.Analyzers" 
+      Version="1.2.0-beta.435"
+      PrivateAssets="all" 
+      Condition="$(MSBuildProjectExtension) == '.csproj'" 
+      />
+
+      <PackageReference
+      Include="SonarAnalyzer.CSharp"
+      Version="8.51.0.59060"
+      PrivateAssets="all"
+      Condition="$(MSBuildProjectExtension) == '.csproj'"
+      />
+    
+      <PackageReference 
+      Include="Microsoft.CodeAnalysis.FxCopAnalyzers" 
+      Version="3.3.1"
+      PrivateAssets="all" 
+      Condition="$(MSBuildProjectExtension) == '.csproj'" 
+      />
+
+      <PackageReference 
+      Include="CSharpGuidelinesAnalyzer" 
+      Version="3.8.2" 
+      PrivateAssets="all" 
+      Condition="$(MSBuildProjectExtension) == '.csproj'" 
+      />
+
+  </ItemGroup>
+</Project>

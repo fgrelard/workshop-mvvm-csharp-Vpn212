@@ -63,7 +63,6 @@
         },
         "ghcr.io/devcontainers/features/python:1": {},
         "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {},
-        // Install common utilities
         "ghcr.io/devcontainers/features/common-utils:1": {
             "installZsh": true,
             "installOhMyZsh": true,

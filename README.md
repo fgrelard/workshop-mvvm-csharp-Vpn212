@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/CraftLR/workshop-git/main/src/main/resources/assets/logo.png" alt="class logo" class="logo"/> 
+# <img src="https://raw.githubusercontent.com/CraftLR/workshop-git/main/src/main/resources/assets/logo.png" alt="class logo" class="logo"/>
 
 ## La Rochelle Software Craftsmenship
 
@@ -11,31 +11,35 @@
   * Consulter et/ou créer des [issues](https://github.com/CraftLR/RemoteDevelopmentCsharpWithAvaloniaUI/issues).
   * [Email](mailto:sebastien.nedjar@univ-amu.fr) pour toutes questions autres.
 
-## Aperçu du tutoriel et objectifs d'apprentissage
+## Aperçu du workshop et objectifs d'apprentissage
 
-Commencer à écrire du code demande souvent de disposer d'un environnement de développement particulier avec des contraintes bien spécifique concernant les logiciels disponibles ainsi que leurs versions. Développer avec un environnement assez portable pour ne plus avoir à se préoccuper ni de la machine que l'on utilise ni de sa configuration permet de gagner un temps précieux et de se concentrer sur l'essentiel, c'est-à-dire produire le code qui répondra au mieux aux besoins de l'utilisateur.
+Développer une application graphique est une tache importante et complexe pour les équipes techniques. L'IHM est généralement la partie la plus proche de l'utilisateur. En plus de devoir atteindre une complétude fonctionnelle maximale, l'IHM doit prendre en compte des facteurs comme l'ergonomie, l'esthétique ou l'expérience utilisateur qui demandent une expertise à part entière pour chacun d'entre eux. Dans les équipes, le développeur front, ne peut donc pas se préoccuper uniquement des problématiques techniques. Pour faciliter ce travail, il faut autant que possible séparer les responsabilités (separation of concerns (SoC) en anglais) pour réussir à gérer des parties de l'application avec des objectifs qui peuvent parfois sembler contradictoires.
 
-Avec la démocratisation des conteneurs et leur meilleure intégration dans les différents outils, il est maintenant possible de disposer de tels environnements de développement assez facilement. L'objectif de ce tutoriel est de vous faire découvrir comment mettre en place ces conteneurs de développement et surtout comment les utiliser de manière quasi-transparente avec un IDE.
+L'architecture technique devant être le reflet de l'organisation humaine du projet, depuis très longtemps, l’ingénierie logicielle s'est préoccupé de cette problématique en proposant des découpages sémantiques permettant aux équipes d'avoir des ensembles cohérents pour chaque préoccupation (concern en anglais). Que ce soit dans les architecture [trois tiers](https://fr.wikipedia.org/wiki/Architecture_trois_tiers) comme dans leur généralisation (les architecture multi-tiers), l'architecture logique du système est divisée en trois niveaux ou couches :
 
-La technologie présentée est celle des [Dev Container](https://code.visualstudio.com/docs/devcontainers/containers) originellement développée pour [Visual Studio Code](https://code.visualstudio.com/docs/) mais qui est aujourd’hui disponible pour les IDE JetBrains à travers l'application [JetBrains Gateway](https://www.jetbrains.com/fr-fr/remote-development/gateway/).
+* couche présentation ;
+* couche métier ;
+* couche d'accès aux données.
 
-Pour gagner encore plus en souplesse et en rapidité, il est possible de lancer le conteneur de développement sur une machine distante en utilisant des outils tels que [Github Codespaces](https://github.com/features/codespaces) ou [Gitpod](https://www.gitpod.io/).
+L'implémentation de cette séparation dans les langages objets passe par l'utilisation de [design patterns (patrons de conception)](https://fr.wikipedia.org/wiki/Patron_de_conception) tel que le [MVP](https://fr.wikipedia.org/wiki/Mod%C3%A8le-vue-pr%C3%A9sentation), le [MVC](https://fr.wikipedia.org/wiki/Mod%C3%A8le-vue-contr%C3%B4leur) ou le [MVVM](https://fr.wikipedia.org/wiki/Mod%C3%A8le-vue-vue_mod%C3%A8le). Dans chacun d'eux, on retrouve toujours la vue (qui représente ce que voit l'utilisateur) et le modèle (qui doit implémenter la logique métier). La communication entre les deux couches est la principale différence entre les variantes de ces patrons de conception.
 
-Ce dépôt contient la configuration minimale nécessaire pour créer un projet disposant d'une interface homme machine basée sur la bibliothèque [AvaloniaUI](https://avaloniaui.net/). Il peut être utilisé avec un IDE en ligne comme avec un IDE local.
+En plus de vous faire toucher du doigt la problématique de séparation des préoccupations dans un développement logiciel, cet atelier vise à vous faire mettre en oeuvre le pattern MVVM sur des application graphiques simples. Le framework utilisé est [AvaloniaUI](https://avaloniaui.net/). Ce framework est très similaire à [WPF(Windows Presentation Foundation)](https://learn.microsoft.com/fr-fr/dotnet/desktop/wpf/overview/?view=netdesktop-6.0) de Microsoft mais il a l'avantage d'être multi-plateforme et surtout totalement compatible avec .NET 6 et .NET 7. L'utilisation du langage de balisage XAML pour décrire la vue, le rend très adapté à l'utilisation avec MVVM.
 
-## Conteneur de développement pour applications graphiques
+## Applications graphiques multi-plateforme en C# et architecture MVVM  
 
-Un conteneur de développement permet d'abstraire les dépendances et les outils d'un projet via l'utilisation de [Docker](https://www.docker.com/). Le pack d'extension [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) de VS Code permet à l'IDE d'interagir directement avec le conteneur. Cela réduit considérablement le temps de démarrage d'un nouveau développeur, tout en réduisant le risque d'installations incorrectes ou de blocage lors de l'installation.
+Une base de code portable et maintenable est importante, en particulier dans les implémentations .NET à grande échelle et multi-plateformes. Sur les plates-formes basées sur XAML, telles que Windows Presentation Foundation (WPF), Universal Windows Platform (UWP), Xamarin Forms et AvaloniaUI, il est possible d'atteindre des objectifs de maintenabilité en implémentant le modèle [MVVM](https://learn.microsoft.com/en-us/previous-versions/msp-n-p/hh848247(v=pandp.10)).
 
-Un conteneur de développement est défini par un fichier `devcontainer.json` qui doit se trouver dans le dossier `.devcontainer` à la racine du projet. Dans ce fichier, sont définis les services requis, ainsi que la configuration spécifique de l'application. Une fois le conteneur construit, VS Code peut travailler directement à l'intérieur du conteneur, comme si vous développiez localement.
+MVVM signifie Model-View-ViewModel, où le Modèle représente les services, des objets de transfert de données et des entités de base de données liés au domaine de l'application, la Vue est l'interface utilisateur et la responsabilité de la Vue-Modèle est de lier ces deux couches de manière adéquate. La ViewModel encapsule l'interaction avec le modèle, exposant les propriétés et les commandes de l'interface utilisateur XAML à lier.
 
-Il y a beaucoup à savoir sur les Dev Container, mais le moyen le plus simple de démarrer est de tester sur un projet déjà configuré.
+Chacun des exemples donnés pourra sans problème remplacer la vue en XAML (ciblant WPF, UWP, Xamarin Forms ou AvaloniaUI) sans toucher au code des deux autres couches.
 
 La première chose à faire est de créer un fork de ce dépôt. Pour ce faire, rendez-vous sur le lien suivant :
 
-<https://classroom.github.com/a/ODs1X7VB>
+<https://classroom.github.com/a/VYF3szeN>
 
 GitHub va vous créer un dépôt contenant un fork de ce dépôt. Vous apparaîtrez automatiquement comme contributeur de ce projet pour y pousser votre travail. Clonez localement votre fork et ouvrez le avec Visual Studio Code.
+
+Le code de départ de ce dépôt est basé sur celui de [l'environnement de distant de développement d'application graphique en C#](https://github.com/CraftLR/RemoteDevelopmentCsharpWithAvaloniaUI). Cet environnement, permet de disposer de l'ensemble des outils nécessaires au développement d'application graphique et à la gestion de la qualité de code. Si vous n'avez pas pris le temps de le tester, il est conseillé de le faire avant de commencer cet atelier même si les éléments les plus important seront rappelés.
 
 ### Lancement de l'application graphique d'exemple
 
@@ -52,8 +56,6 @@ dotnet run
 
 Les deux premières commandes préparent le projet et le compile. La dernière permet de l'executer. Le programme étant graphique, la commande vous rendra la main que lorsque vous aurez fermer la fenêtre. Actuellement, la fenêtre est lancée dans le conteneur, pour la voir, il faut pouvoir accéder à l'environnement graphique. Dans la prochaine étape vous allez découvrir comment voir la fenêtre de l'application graphique.
 
-### Connexion au bureau du conteneur
-
 Pour lancer une application graphique, il faut disposer dans le conteneur de développement d'un environnement graphique (un serveur X) ainsi que d'un gestionnaire de fenêtrage. Pour éviter le gaspillage de ressource, il faut utiliser le gestionnaire le plus léger possible. C'est pour cela que l'on utilisera [Fluxbox](http://fluxbox.org/). Pour rendre visible l’environnement graphique, on utilisera une version de VNC appelé noVNC qui fonctionne directement dans un navigateur.
 
 Pour ouvrir, noVNC et voir les applications graphiques en cours d'exécution, ouvrez la vue `Ports` et cliquez sur l’icône globe à coté de l'adresse locale `localhost:6080`. Entrez le mot de passe `vscode` et validez.
@@ -62,99 +64,146 @@ Si votre application graphique utilise la console, les messages s'afficheront di
 
 Si vous avez lancé la commande `dotnet run` dans le dossier du projet `CraftLR.UI`, vous devriez avoir l'affichage suivant :
 
-![vue_fluxbox_novnc](src/resources/assets/vue_fluxbox_novnc.png)
+![vue_fluxbox_novnc](src/CraftLR.Exercice1/Assets/vue_fluxbox_novnc.png)
 
 La fenêtre est bien visible et si vous interagissez avec les boutons, les messages s'affichent bien dans le terminal dans lequel le programme a été lancé :
 
-![vue_terminal_programme_exemple](src/resources/assets/vue_terminal_programme_exemple.png)
+![vue_terminal_programme_exemple](src/CraftLR.Exercice1/Assets/vue_terminal_programme_exemple.png)
 
 Pour terminer l'application graphique, il suffit de la fermer normalement dans la session noVNC.
 
-### Construire, tester, exécuter
+### Premières applications graphiques : composants et événements
 
-Exécutez les commandes suivantes à partir du dossier contenant le fichier `.sln` afin de construire le code et de le tester :
+Pour placer des composants dans une fenêtre, nous utiliserons principalement le conteneur `DockPanel`. Ce conteneur est un panneau simple qui permet de placer des composants enfants dans cinq zones : `Top`, `Bottom`, `Left`, `Right`. Le dernier composant placé utilisera la place restante au centre du panneau.
 
-```sh
-dotnet build
-dotnet test
-```
+Un seul objet graphique (composant, conteneur, …) peut être placé dans chacun de ces emplacements. Le conteneur `DockPanel` est fréquemment utilisé comme conteneur racine, car il correspond à une division assez classique de la fenêtre principale d'une application (barre de titre, barre d'état, zone d'options, zone principale, etc.).
 
-Pour lancer les test en continu sur le projet `App.Tests`, utilisez la commande suivante :
+Le `DockPanel` est l'un des nombreux type de panneau qui permet de gérer la disposition des composants graphiques. Les panneaux peuvent être imbriqué les un dans les autres à la manière des poupées russes si nécessaire mais généralement pour des raison de lisibilité, on préfère utiliser les grilles (classe `Grid`) lorsque l'on doit faire des arrangements complexes.
 
-```sh
-dotnet watch --project tests/CraftLR.App.Tests/CraftLR.App.Tests.csproj test
-```
+#### Exercice 1
 
-Pour connaitre la couverture du code par les tests, vous pouvez lancer les commandes suivantes :
+Ouvrez la classe `HelloLabel` et modifiez-la pour que votre application affiche une fenêtre respectant les contraintes suivantes :
 
-```sh
-cd tests/CraftLR.App.Tests/
-rm -r TestResults
-dotnet test --collect:"XPlat Code Coverage"
-GUID=`ls TestResults`
-reportgenerator -reports:./TestResults/$GUID/coverage.cobertura.xml -targetdir:"coveragereport" -reporttypes:Html
-```
+* Le titre de la fenêtre principale doit être "Hello Label !".
 
-Ouvrir avec un navigateur le fichier `coveragereport/index.html` pour observer la converture du code par les tests.
+* La fenêtre doit avoir une largeur de 250 et une hauteur de 100.
 
-### Appliquer les règles de formatage du code à l'ensemble de la solution
+* La fenêtre doit avoir pour racine un nœud du type `DockPanel`
 
-La commande `dotnet format` est un formateur de code qui applique des préférences de style à un projet ou une solution. Les préférences seront lues à partir du fichier `.editorconfig`. Pour plus d'informations, consultez la documentation de [EditorConfig](https://editorconfig.org/).
+* Les éléments de ce panneau devront être centrés horizontalement et verticalement
 
-Pour formater l'intégralité de la solution courante, vous pouvez utiliser la commande suivante :
+* Au centre de ce `DockPanel`, placez un `TextBlock` (voir la documentation de cette classe) ayant pour `Text` la chaîne `Hello !`
 
-```sh
-dotnet format
-```
+* La fenêtre doit être visible
 
-Pour seulement vérifier si le code est correctement formaté :
+Exécutez l'application pour vérifier le fonctionnement de cette fenêtre. Redimensionnez-la pour voir comment se comporte votre `TextBlock`.
 
-```sh
-dotnet format --verify-no-changes
-```
+Logiquement, vous devriez avoir un résultat ressemblant à cela :
 
-### Vérifier les métriques de code
+![vue_exercice1](src/CraftLR.Exercice1/Assets/vue_exercice1.png)
 
-Pour s'assurer de bien maitriser la qualité de son code, il est nécessaire de pouvoir monitorer certaines métrique. [Metrix++](https://metrixplusplus.github.io/) est un outil extensible pour la collecte et l'analyse de métriques de code.
+#### Exercice 2
 
-Les commandes suivantes permettent de collecter les métriques et de les visualiser :
+Les blocs de texte `TextBlock` sont des composants pour afficher un texte. Ils sont souvent utilisés conjointement avec des composants comme les `TextBox` (ou tout autre composant de saisie). Maintenant que nous avons vu ce composant passif, nous allons voir le premier avec lequel nous pouvons interagir : le `Button`.
 
-* Collecter des métriques
+Ouvrez la classe `HelloButton` et modifiez-la pour que votre application affiche une fenêtre respectant les mêmes contraintes qu'à l'exercice précédent, mais à la place d'un `TextBlock`, vous utiliserez un `Button` (voir la documentation de cette classe) ayant pour texte la chaîne `Hello !`.
 
-```sh
-metrix++ collect --std.code.complexity.cyclomatic --std.code.lines.code --std.code.todo.comments --std.code.maintindex.simple -- .
-```
+Exécutez l'application pour vérifier le fonctionnement de cette fenêtre.
 
-* Obtenez un aperçu
-  
-```sh
-metrix++ view --db-file=./metrixpp.db
-```
+#### Exercice 3
 
-* Appliquer des seuils
+Pour l'instant le bouton est très simple. Ajoutez-lui quelques décorations pour qu'il soit plus esthétique.
 
-```sh
-metrix++ limit --db-file=./metrixpp.db --max-limit=std.code.complexity:cyclomatic:5 --max-limit=std.code.lines:code:25:function --max-limit=std.code.todo:comments:0 --max-limit=std.code.mi:simple:1
-```
+Ouvrez la classe `HelloBeautifulButton` et modifiez-la pour que votre application affiche une fenêtre respectant les contraintes suivantes :
 
-### Supprimer la duplication de code
+* Respecter toutes les contraintes de l'exercice précédent
 
-Pour détecter les duplications de code, vous pouvez utiliser l'outil CPD (Copy Paste Detector) du projet PMD Source Code Analyzer.
+* Construire un objet du type `Image` ouvrant l'image `logo.png` située dans le dossier `Assets`.
 
-Pour installer pmd, vous pouvez utiliser homebrew avec la commande suivante :
+* Positionner cette image comme à l’intérieur du bouton.
 
-```sh
-brew install pmd
-```
+* Ajouter [les éléments de style](https://docs.avaloniaui.net/docs/styling) pour améliorer l'apparence de l'application en ayant un rendu sombre.
 
-La commande suivante permet de detecter et signaler les doublons dans l'ensemble des fichiers C# du dossier courant.
+* Agrandir la hauteur de la scène à 250
 
-```sh
-pmd cpd --minimum-tokens 100 --language cs --dir .
-```
+Exécuter l'application pour vérifier le fonctionnement de cette fenêtre.
 
-### Maintenir la qualité de code
+#### Exercice 4
 
-Comme vous allez le découvrir, les projets sont configurés pour activer plusieurs outils permettant de détecter les mauvaises pratiques de code. Le premier `sonarlint` est capable de détecter automatiquement plusieurs centaines d'erreurs classiques. Il rajoutera dans la vue **Problèmes** les odeurs de code qu'il aura détecter. Certaines règles utilisé par cet outil peuvent ne pas être adaptées à la maturité de votre équipe et être désactivées dans le fichier `.editorconfig`.
+Bien que le bouton soit un peu plus attrayant, il n'est pour l'instant pas très interactif. Généralement, l'utilisateur s'attend à ce qu'un bouton lance un traitement lorsqu'on l'actionne. Pour ce faire, C# permet de réagir aux événements avec le mécanisme des écouteurs (`Listener`).
 
-Le second outil pour maintenir la qualité de votre base de code est `StyleCop` qui vient en complément d'un linter pour vérifier et corriger des règles de style d'un projet. Les règles peuvent être configurées comme `sonarlint` directement dans le fichier `.editorconfig`.
+Pour qu'un *écouteur* soit appelé au bon moment (lorsqu'un événement est déclenché par une action extérieure), il faut qu'il s'enregistre auprès de l'objet qu'il souhaite écouter. Pour la classe `Button`, c'est la méthode `setOnAction()` qui permet à un écouteur de s'enregistrer pour être informé quand le bouton est actionné.
+
+Ouvrez donc la classe `HelloBeautifulUsefulButton` et la vue XAML associée, puis implémentez-les en respectant les contraintes suivantes :
+
+* Le bouton doit réagir à l'événement `Click` en appelant la méthode `Button_OnClick`
+
+* La méthode `Button_OnClick(object sender, RoutedEventArgs eventData)` de la classe se contente d'afficher le texte "Bouton actionné" sur la sortie standard.
+
+* `HelloBeautifulUsefulButton` doit respecter les mêmes contraintes que `HelloBeautifulButton`.
+
+Exécutez l'application pour vérifier le fonctionnement de cette fenêtre.
+
+L'utilisation de la classe associée à la vue XAML permet de facilement ajouter de l'interactivité. Cette manière de faire n'est pourtant pas recommandée car la vue et le code métier sont trop intriqués et donc difficiles à faire vivre indépendamment. Pour éviter la difficulté de maintenance, le pattern MVVM est utilisé.
+
+### Architecture MVVM
+
+Dans le patron MVVM, la vue est lié au code grâce au mécanisme des liaisons (bindings). Les bindings permettent de récupérer les données de la vue sans avoir besoin de gérer les événements manuellement.
+
+![MVVM](src/CraftLR.Exercice5/Assets/MVVMPattern.png)
+
+La vue-modèle est l'élément clé du modèle MVVM. Il vous permet de connecter correctement l'interface utilisateur et le backend et de mettre à jour implicitement l'interface utilisateur à partir de votre code sans avoir besoin de connaître les détails de l'interface utilisateur. De plus, la vue et la vue-modèle sont séparées car elles sont connectées via une liaison au lieu de noms d'éléments comme dans les classes dites code-behind. Ainsi, les vue-modèles peuvent être utilisées avec différentes vues sans ajuster le code, etc.
+
+Pour en savoir plus sur les bindings, vous pouvez aller consulter la page suivante : <https://docs.avaloniaui.net/docs/getting-started/programming-with-avalonia/data-binding>
+
+Dans Avalonia, [ReactiveUI](https://www.reactiveui.net/) est souvent utilisé dans les vue-modèles. C'est un framework open source qui permet d'écrire du code de vue-modèles de manière asynchrone "réactive". Il permet de créer des chaînes de fonctions qui réagissent à l'entrée de l'utilisateur.
+
+Avant de voir ces aspects avancés, commençons par découvrir les mécanismes simples de liaison.
+
+#### Exercice 5
+
+Les bindings permettent de faire correspondre des propriétés sans avoir besoin de s'occuper des événements. À l’intérieur d'une vue, cela permet de faire en sorte que des composants se synchronisent. Par défaut les liaisons sont orientées. L'une est la source et la seconde la cible. Chaque changement de la source modifie la valeur de la cible.
+
+Ouvrez donc le fichier `HelloUI.axaml` et le modifier pour respecter les contraintes suivantes :
+
+* Le panneau principal est un `StackPanel` dont l'orientation est verticale.
+
+* Ce panneau contient :
+
+  * Un bloc de texte dont le contenu est la chaîne "What is your name?".
+
+  * Un champ de saisi textuel (`TextBox`) dont le nom (`Name`) doit être `"NameTB"`.
+
+  * Un bloc de texte nommé `"GreetingTB"`.
+
+* Le contenu du bloc `GreetingTB` doit être lié à celui du bloc `NameTB`. Pour ce faire, il faut préciser le nom de l'objet avec la directive `ElementName` et le nom de la propriété source avec la directive `Path`.
+
+* La fenêtre `HelloUI` doit respecter les mêmes contraintes que `HelloBeautifulUsefulButton`.
+
+Exécutez l'application pour vérifier le fonctionnement de cette fenêtre. Saisir du texte dans le champ de saisi pour voir la liaison à l'oeuvre.
+
+#### Exercice 5 bis
+
+Modifier le binding précédent pour que le bloc de texte `GreetingTB` affiche un message de salutation de la forme `Hello XXX !` (avec `XXX`, le nom saisi dans le champ `NameTB`). Pour ce faire utiliser un `StringFormat`.
+
+#### Exercice 6
+
+Si la liaison doit se faire dans les deux sens, on parle de Binding **bidirectionnel**. Une liaison bidirectionnelle s'effectue de manière similaire, mais en indiquant `Mode=TwoWay`. Une propriété ne peut être liée (asservie) qu'à une seule autre si le lien est unidirectionnel. Par contre, les liens bidirectionnels peuvent être multiples.
+
+Dans cet exercice, on va synchroniser la taille d'un cercle à la valeur d'un slider et celle d'un champ de texte. Quand l'utilisateur modifiera la valeur du slider, le rayon du cercle sera modifié ainsi que l'affichage du champ de texte. De même quand la valeur écrite dans le champ de texte sera modifiée, le slider et le cercle se modifieront.
+
+Modifier le fichier `Cercle.axaml` pour ajouter les liaisons permettant d'avoir le comportement attendu.
+
+Votre fenêtre principale devrait ressembler à cela à la fin de l'exercice :
+
+![cercle](src/CraftLR.Exercice6/Assets/cercle.png)
+
+#### Exercice 7
+
+Les bindings des exercices précédents on principalement permis de "connecter" des composants graphiques au sein d'une même vue. Pour implémenter le patron MVVM, les bindings sont utilisés pour connecter la vue et la vue-modèle.
+
+**Diagramme de classes :**
+
+![Diagramme de la classe](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com//Assets/pacman.puml)
+
+Ce diagramme est généré avec l'outil PlantUML. La convention graphique des schémas UML varie en fonction de l'outil utilisé. Vous pouvez retrouver la documentation de PlantUML ainsi que la représentation visuelle adoptée sur cette page : [https://plantuml.com/fr/class-diagram](https://plantuml.com/fr/class-diagram).

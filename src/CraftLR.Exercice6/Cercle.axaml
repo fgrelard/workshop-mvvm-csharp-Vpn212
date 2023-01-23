@@ -1,0 +1,9 @@
+<Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Class="CraftLR.Exercice6.Cercle" Title="Binding two way" Height="600" Width="500">
+    <StackPanel Orientation="Vertical">
+        <Slider Name="RadiusSlider" Minimum="0" Maximum="500" TickFrequency="10" IsSnapToTickEnabled="True"/>
+        <Panel Width="500" Height="500" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Ellipse Name="CentralEllipse" Fill="Black" Width="{Binding RelativeSource={RelativeSource Self},Path=Height}" /> 
+        </Panel>
+        <TextBox/>
+    </StackPanel>
+</Window>

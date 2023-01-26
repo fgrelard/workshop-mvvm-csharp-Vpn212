@@ -2,8 +2,6 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 
-using CraftLR.Exercice7.Views;
-
 namespace CraftLR.Exercice7;
 
 public partial class App : Application
@@ -17,7 +15,7 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new CustomerView();
+            desktop.MainWindow = new HelloButton();
         }
 
         base.OnFrameworkInitializationCompleted();

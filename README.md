@@ -146,19 +146,47 @@ Exécutez l'application pour vérifier le fonctionnement de cette fenêtre.
 
 L'utilisation de la classe associée à la vue XAML permet de facilement ajouter de l'interactivité. Cette manière de faire n'est pourtant pas recommandée car la vue et le code métier sont trop intriqués et donc difficiles à faire vivre indépendamment. Pour éviter la difficulté de maintenance, le pattern MVVM est utilisé.
 
-### Architecture MVVM
-
-Dans le patron MVVM, la vue est lié au code grâce au mécanisme des liaisons (bindings). Les bindings permettent de récupérer les données de la vue sans avoir besoin de gérer les événements manuellement.
-
-![MVVM](src/CraftLR.Exercice5/Assets/MVVMPattern.png)
-
-La vue-modèle est l'élément clé du modèle MVVM. Il vous permet de connecter correctement l'interface utilisateur et le backend et de mettre à jour implicitement l'interface utilisateur à partir de votre code sans avoir besoin de connaître les détails de l'interface utilisateur. De plus, la vue et la vue-modèle sont séparées car elles sont connectées via une liaison au lieu de noms d'éléments comme dans les classes dites code-behind. Ainsi, les vue-modèles peuvent être utilisées avec différentes vues sans ajuster le code, etc.
+### Bindings
+Les bindings (ou liaison) est un mécanisme permettant d'associer des propriétés pour que la modification de l'une implique la modification de la seconde. C'est le mécanisme de base qui permettra par la suite de lier les couches d'une application MVVM.
 
 Pour en savoir plus sur les bindings, vous pouvez aller consulter la page suivante : <https://docs.avaloniaui.net/docs/getting-started/programming-with-avalonia/data-binding>
 
-Dans Avalonia, [ReactiveUI](https://www.reactiveui.net/) est souvent utilisé dans les vue-modèles. C'est un framework open source qui permet d'écrire du code de vue-modèles de manière asynchrone "réactive". Il permet de créer des chaînes de fonctions qui réagissent à l'entrée de l'utilisateur.
-
 Avant de voir ces aspects avancés, commençons par découvrir les mécanismes simples de liaison.
+
+Voici les éléments les plus important à connaître pour utiliser les bindings :
+
+- **Objet source de liaison** - L'objet par lequel on peut obtenir le chemin d'accès à la propriété source de liaison.
+
+- **Objet cible de liaison** - L'objet dont la propriété (Attached, Style ou Direct) sert de cible pour la liaison. L'objet cible ne peut être que de la classe dérivée de `AvaloniaObject`(ce qui signifie qu'il peut s'agir de n'importe lequel des éléments visuels d'Avalonia).
+
+- **Chemin de liaison** - Chemin de l'objet source à la propriété source. Le chemin se compose de liens de chemin, chacun pouvant être une propriété normale(C#) ou une propriété Avalonia. Dans les liaisons XAML, les propriétés d'Avalonia doivent être entre parenthèses.
+
+- **la proriété `Target`** - ne peut être que l'un des types de propriété Attached, Style ou Direct.
+
+- `BindingMode` peut être:
+    - `OneWay` - lorsque la source est modifiée, le changement est propagé vers la cible.
+    - `TwoWay` - lorsque la source ou la cible changent, l'autre sera également mise à jour.
+    - `OneWayToSource` - lorsque la cible est mise à jour, la source est également mise à jour, mais pas l'inverse.
+    - `OneTime` - synchronise la cible à partir de la source une seule fois - lors de l'initialisation.
+    - `Default` - repose sur le mode de liaison préféré de la propriété cible. 
+
+- **Convertisseur** - nécessaire uniquement si la valeur source et la valeur cible sont de type différents. Le convertisseur est utilisé pour convertir les valeurs de la source à la cible et vice versa. Pour les liaisons habituelles, le convertisseur doit implémenter `IValueConverter`.
+  
+Il y a aussi les `MultiBinding`. Un `MultiBinding` suppose plusieurs sources de liaison et toujours la même cible de liaison unique. Les multiples sources sont combinées en une seule cible par un convertisseur spécial qui implémente `IMultiValueConverter`.
+
+L'une des parties complexes des bindings est qu'il existe plusieurs façons de spécifier l'objet source. Voici la description des différentes méthodes de spécification de l'objet source :
+
+- Si vous ne spécifiez pas du tout l'objet source - dans ce cas, l'objet source par défaut sera donné par le `DataContext` de la cible. Le `DataContext` se propage automatiquement vers le bas de l'arborescence visuelle, sauf modification explicite (et à quelques exceptions près).
+
+- Vous pouvez spécifier la source explicitement en XAML en l'affectant à la propriété `Source` du binding. Vous pouvez l'affecter directement en C#, ou en XAML.
+
+- Il existe la propriété `ElementNameune` qui peut être utilisée pour rechercher l'élément source dans le même fichier XAML par son nom (propriété `Name`).
+- Il existe aussi la propriété `RelativeSource` qui permet de localiser l'objet source en fonction de sa propriété `Mode` :
+    - Pour `Mode==Self`, l'objet source sera le même que l'objet cible.
+    - `Mode==TemplatedParent` ne peut être utilisé que dans un `ControlTemplate` de certain Avalonia `TemplatedControl`.
+    - `Mode==FindAncestor` signifie que l'objet source sera recherché dans l'arborescence visuelle. La propriété `AncestorType` doit également être utilisée dans ce mode, pour spécifier le type de l'objet source à rechercher. Si rien d'autre n'est spécifié, le premier objet de ce type deviendra l'objet source. Si `AncestorLevel` est défini, il spécifie que le Nème objet ancêtre de ce type sera utilisé comme source de la liaison.
+
+Dans Avalonia, la propriété `RelativeSource` peut être définie sur `TreeType.Logical`(par défaut `TreeType.Visual`). Dans ce cas, les ancêtres sont recherchés dans l'arbre logique (qui est plus clairsemé et moins complexe).
 
 #### Exercice 5
 
@@ -198,12 +226,162 @@ Votre fenêtre principale devrait ressembler à cela à la fin de l'exercice :
 
 ![cercle](src/CraftLR.Exercice6/Assets/cercle.png)
 
+### Architecture MVVM
+
+Dans le patron MVVM, la vue est lié au code grâce au mécanisme des liaisons (bindings). Les bindings permettent de récupérer les données de la vue sans avoir besoin de gérer les événements manuellement.
+
+![MVVM](src/CraftLR.Exercice5/Assets/MVVMPattern.png)
+
+La vue-modèle est l'élément clé du modèle MVVM. Il vous permet de connecter correctement l'interface utilisateur et le backend et de mettre à jour implicitement l'interface utilisateur à partir de votre code sans avoir besoin de connaître les détails de l'interface utilisateur. De plus, la vue et la vue-modèle sont séparées car elles sont connectées via une liaison au lieu de noms d'éléments comme dans les classes dites code-behind. Ainsi, les vue-modèles peuvent être utilisées avec différentes vues sans ajuster le code, etc.
+
+Les bindings vus dans les exercices précédents ont principalement permis de "connecter" des composants graphiques au sein même de la vue. Bien que déjà pratique, ce type de bindings est utilisé assez marginalement. 
+
+La principale utilisation des bindings l'est pour la mise en oeuvre de la séparation des préoccupations et le découpage entre la vue et la couche métier à travers le design pattern Modèle Vue Vue-Modèle(MVVM). Pour implémenter le patron MVVM, les bindings sont utilisés pour connecter la vue et la vue-modèle. 
+
 #### Exercice 7
 
-Les bindings des exercices précédents on principalement permis de "connecter" des composants graphiques au sein d'une même vue. Pour implémenter le patron MVVM, les bindings sont utilisés pour connecter la vue et la vue-modèle.
+De manière plus précise, la Vue-Modèle est injectée dans la vue à travers le `DataContext`. L'ensemble des propriétés du Vue-Modèle peuvent être ainsi liées avec les données de la vue simplement en indiquant le chemin de la propriété visée.
+
+L'injection du `DataContext` se fait dans fichier code-behind de la vue (le fichier `*.axaml.cs` de même nom que la vue). Plus précisément dans le constructeur de la classe.
+
+Pour interagir, l'objet vue-modèle va mettre à disposition des propriétés qui implémentent l'interface `ICommand` qui seront utilisée comme cible des actions de la vue. 
+
+Reprenons comme exemple la vue de l'exercice 2 et introduisons une liaison pour le contenu du bouton et un second pour la commande associée :
+```XML
+<Window xmlns="https://github.com/avaloniaui" 
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+x:Class="CraftLR.Exercice7.HelloButton" 
+Title="Hello Button !" Height="100" Width="250" >
+    <StackPanel>
+        <Button Content="{Binding Path=ButtonCaption}" Command="{Binding CountClick}" />
+    </StackPanel>
+
+</Window>
+```
+
+Le fichier code-behind associé `HelloButton.axaml.cs` est modifié pour injecter un object de la classe `HelloButtonViewModel` en tant que `DataContext` :
+
+```csharp
+public partial class HelloButton : Window
+{
+    public HelloButton()
+    {
+        InitializeComponent();
+        DataContext = new HelloButtonViewModel();
+    }
+}
+```
+
+La classe `HelloButtonViewModel` quant à elle ressemblera à cela avec les propriétés et les fonctions qui sont utilisées dans le binding déclaré dans la vue : 
+
+```csharp
+public class HelloButtonViewModel : HelloButtonViewModelBase
+{
+    private string _buttonCaption;
+    private int _numberOfClicks;
+    public HelloButtonViewModel()
+    {
+        _buttonCaption = "Hello!";
+        _numberOfClicks = 0;
+    }
+
+    public string ButtonCaption
+    {
+        get => _buttonCaption;
+        set
+        {
+            if (_buttonCaption == value) return;
+            _buttonCaption = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public void CountClick()
+    {
+        _numberOfClicks++;
+        ButtonCaption = $"{_numberOfClicks} Clicks";
+    }
+}
+```
+
+Cette classe implémente la logique de cette application qui affiche sur le bouton, le nombre de fois où il a été cliqué.
+
+Ouvrez les différents fichiers du dossier `src/CraftLR.Exercice7` et prennez le temps de comprendre le fonctionnement de l'application. 
+
+Modifiez la Vue-Modèle pour que le bouton se désactive quand il a été actionné plus de 5 fois. Pour ce faire, regardez la documentation des commandes avec Avalonia : <https://docs.avaloniaui.net/docs/data-binding/binding-to-commands>
+
+#### Exercice 8
+
 
 **Diagramme de classes :**
 
-![Diagramme de la classe](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com//Assets/pacman.puml)
+![Diagramme de la classe](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/CraftLR/workshop-MVVM-csharp/main/src/CraftLR.Exercice7/Assets/exercice7.puml)
 
 Ce diagramme est généré avec l'outil PlantUML. La convention graphique des schémas UML varie en fonction de l'outil utilisé. Vous pouvez retrouver la documentation de PlantUML ainsi que la représentation visuelle adoptée sur cette page : [https://plantuml.com/fr/class-diagram](https://plantuml.com/fr/class-diagram).
+
+Travaille à faire : 
+
+- Créez une classe de modèle (appelée "Pokemon") qui contient les propriétés de données pour un Pokémon.
+
+```csharp
+class Pokemon {
+    public string Name { get; set; }
+    public int Level { get; set; }
+    public string Type { get; set; }
+}
+```
+
+- Créez une classe de vue-modèle (appelée `PokemonViewModel`) qui contient les propriétés et les commandes liées à l'interface utilisateur. Cette classe est liée à la vue (appelée `PokemonView`) via une liaison de données.
+
+```csharp
+class PokemonViewModel : INotifyPropertyChanged {
+    private Pokemon _pokemon;
+    public Pokemon Pokemon {
+        get { return _pokemon; }
+        set {
+            _pokemon = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ICommand UpdateCommand { get; set; }
+
+    public PokemonViewModel() {
+        Pokemon = new Pokemon { Name = "Pikachu", Level = 5, Type = "Electric" };
+        UpdateCommand = new Command(() => {
+            Pokemon.Name = "Charizard";
+            Pokemon.Level = 50;
+            Pokemon.Type = "Fire/Flying";
+        });
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    protected void OnPropertyChanged([CallerMemberName] string propertyName = null) {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+}
+```
+
+- Dans votre fichier XAML (appelé `PokemonView.xaml`), définissez les liaisons de données pour relier les propriétés de votre vue-modèle aux contrôles de votre vue.
+  
+```XML
+<TextBox Text="{Binding Pokemon.Name}" />
+<TextBox Text="{Binding Pokemon.Level}" />
+<TextBox Text="{Binding Pokemon.Type}" />
+<Button Content="Update" Command="{Binding UpdateCommand}" />
+```
+
+- Dans votre fichier code-behind (appelé `PokemonView.xaml.cs`), définissez la propriété DataContext de votre vue pour qu'elle fasse référence à votre vue-modèle.
+  
+```csharp
+public PokemonView() {
+    InitializeComponent();
+    DataContext = new PokemonViewModel();
+}
+```
+
+- Lancer votre application et adapter le code pour afficher le portrait du Pokémon.
+
+
+Cet exemple, permet de comprendre plus en détail le pattron MVVM avec l'utilisation de chaque couche.

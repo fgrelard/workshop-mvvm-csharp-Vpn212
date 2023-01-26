@@ -1,0 +1,41 @@
+@startuml exercice8
+
+together {
+  class Pokemon {
+    +<< get, set >> string Name
+    +<< get, set >> int Level
+    +<< get, set >> string Type
+  }
+
+  class PokemonService {
+    + GetItems() : IEnumerable<Pokemon>
+  }
+}
+
+class PokemonViewModel {
+    +<< get, set >> Pokemon Pokemon
+    +<< get, set >> ICommand UpdateCommand
+}
+
+class PokemonView {
+    +PokemonView()
+}
+
+class ViewModelBase {
+  + <<event>> PropertyChanged : PropertyChangedEventHandler
+  ~ OnPropertyChanged(string propertyName) : void
+}
+
+Pokemon -[hidden]--> PokemonService
+
+PokemonView -right- PokemonViewModel : Bindings
+
+PokemonViewModel -up-|> ViewModelBase 
+
+ViewModelBase -up-|> INotifyPropertyChanged
+
+PokemonViewModel -- PokemonService
+
+PokemonViewModel -left- Pokemon
+
+@enduml

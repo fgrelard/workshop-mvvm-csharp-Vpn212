@@ -383,5 +383,7 @@ public PokemonView() {
 
 - Lancer votre application et adapter le code pour afficher le portrait du Pokémon.
 
+- Modifier la création et la récupération de la liste des Pokémons pour qu'elle ait lieu dans la classe `PokemonService`. Cette classe, bien que minimaliste en terme de fonctionnalité, jouera le rôle de [DAO](https://fr.wikipedia.org/wiki/Objet_d%27acc%C3%A8s_aux_donn%C3%A9es) pour les Pokémon. Dans un projet réél, les DAO accèderaient à la base de données et constitueraient la troisième couche du modèle trois tiers. Souvent, l'écriture des DAO est faite en utilisant des mapping objet/relationnel comme [NHibernate](https://nhibernate.info/).
 
-Cet exemple, permet de comprendre plus en détail le pattron MVVM avec l'utilisation de chaque couche.
+
+Cet exemple, permet de comprendre plus en détail le pattron MVVM avec l'utilisation de chaque couche. Pour aller plus loin, vous pouvez ajouter une vue liste de Pokémons avec la possibilité de choisir celui dont on souhaite voir la fiche descriptive.

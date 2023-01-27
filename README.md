@@ -180,13 +180,15 @@ L'une des parties complexes des bindings est qu'il existe plusieurs façons de s
 
 - Vous pouvez spécifier la source explicitement en XAML en l'affectant à la propriété `Source` du binding. Vous pouvez l'affecter directement en C#, ou en XAML.
 
-- Il existe la propriété `ElementNameune` qui peut être utilisée pour rechercher l'élément source dans le même fichier XAML par son nom (propriété `Name`).
+- Il existe la propriété `ElementName` qui peut être utilisée pour rechercher l'élément source dans le même fichier XAML par son nom (propriété `Name`).
 - Il existe aussi la propriété `RelativeSource` qui permet de localiser l'objet source en fonction de sa propriété `Mode` :
     - Pour `Mode==Self`, l'objet source sera le même que l'objet cible.
     - `Mode==TemplatedParent` ne peut être utilisé que dans un `ControlTemplate` de certain Avalonia `TemplatedControl`.
     - `Mode==FindAncestor` signifie que l'objet source sera recherché dans l'arborescence visuelle. La propriété `AncestorType` doit également être utilisée dans ce mode, pour spécifier le type de l'objet source à rechercher. Si rien d'autre n'est spécifié, le premier objet de ce type deviendra l'objet source. Si `AncestorLevel` est défini, il spécifie que le Nème objet ancêtre de ce type sera utilisé comme source de la liaison.
 
 Dans Avalonia, la propriété `RelativeSource` peut être définie sur `TreeType.Logical`(par défaut `TreeType.Visual`). Dans ce cas, les ancêtres sont recherchés dans l'arbre logique (qui est plus clairsemé et moins complexe).
+
+De manière générale, les bindings sont fait directement dans le fichier XAML en indiquant pour la propriété cible avec quelle source elle est liée. La syntaxe d'un tel binding aura la forme `ProprieteCible = "{Binding SpecificationDuChemin}"`. La spécification du chemin utilise la syntaxe décrite ci-avant.
 
 #### Exercice 5
 
@@ -387,3 +389,5 @@ public PokemonView() {
 
 
 Cet exemple, permet de comprendre plus en détail le pattron MVVM avec l'utilisation de chaque couche. Pour aller plus loin, vous pouvez ajouter une vue liste de Pokémons avec la possibilité de choisir celui dont on souhaite voir la fiche descriptive.
+
+

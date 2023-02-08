@@ -443,6 +443,9 @@ dotnet_diagnostic.SA1111.severity = None
 # Braces should not be ommitted
 dotnet_diagnostic.SA1503.severity = None
 
+# File may not end with a newline character
+dotnet_diagnostic.SA1518.severity = None
+
 
 ##
 ## SonarAnalyzers.CSharp

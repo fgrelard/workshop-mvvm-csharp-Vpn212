@@ -1,6 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
     xmlns:vm="using:CraftLR.Exercice8.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Class="CraftLR.Exercice8.Views.PokemonView" Title="Pokedex" Height="100" Width="250">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Class="CraftLR.Exercice8.Views.PokemonView" Title="Pokedex" Height="170" Width="250">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -8,10 +8,12 @@
         <vm:PokemonViewModel/>
     </Design.DataContext>
 
-    <DockPanel>
+    <StackPanel>
+        <TextBox Text="{Binding Pokemon.ID}" />
         <TextBox Text="{Binding Pokemon.Name}" />
         <TextBox Text="{Binding Pokemon.Level}" />
         <TextBox Text="{Binding Pokemon.Type}" />
-        <Button Content="Update" Command="{Binding UpdateCommand}" />
-    </DockPanel>
+        <Button Content="Previous" Command="{Binding DisplayPreviousPokemonCommand}" />
+        <Button Content="Next" Command="{Binding DisplayNextPokemonCommand}" />
+    </StackPanel>
 </Window>

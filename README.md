@@ -350,13 +350,9 @@ class PokemonViewModel : INotifyPropertyChanged {
 
     public PokemonViewModel()
     {
-        Pokemon = new Pokemon { Name = "Pikachu", Level = 5, Type = "Electric" };
-        UpdateCommand = ReactiveCommand.Create(() =>
-        {
-            Pokemon.Name = "Charizard";
-            Pokemon.Level = 50;
-            Pokemon.Type = "Fire/Flying";
-        });
+        _pokemon = new Pokemon { Name = "Pikachu", Level = 5, Type = "Electric" };
+
+        UpdateCommand = ReactiveCommand.Create(() => Pokemon = new Pokemon { Name = "Charizard", Level = 50, Type = "Fire/Flying" });
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

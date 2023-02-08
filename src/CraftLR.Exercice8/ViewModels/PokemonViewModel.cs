@@ -1,8 +1,10 @@
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 using CraftLR.Exercice8.Models;
+using CraftLR.Exercice8.Services;
 
 using ReactiveUI;
 
@@ -21,16 +23,34 @@ public class PokemonViewModel : INotifyPropertyChanged
         }
     }
 
-    public ICommand UpdateCommand { get; set; }
+    public ICommand DisplayNextPokemonCommand { get; set; }
+    public ICommand DisplayPreviousPokemonCommand { get; set; }
 
-    public PokemonViewModel()
+    public PokemonViewModel() : this(new PokemonService())
     {
-        Pokemon = new Pokemon { Name = "Pikachu", Level = 5, Type = "Electric" };
-        UpdateCommand = ReactiveCommand.Create(() =>
+    }
+
+    public PokemonViewModel(PokemonService service)
+    {
+        var pokemons = service.GetItems().ToArray();
+        int index = 0;
+        Pokemon = pokemons.ElementAt(index);
+
+        DisplayNextPokemonCommand = ReactiveCommand.Create(() =>
         {
-            Pokemon.Name = "Charizard";
-            Pokemon.Level = 50;
-            Pokemon.Type = "Fire/Flying";
+            index = (index + 1) % pokemons.Length;
+            Pokemon = pokemons.ElementAt(index);
+        });
+
+        DisplayPreviousPokemonCommand = ReactiveCommand.Create(() =>
+        {
+            index = index - 1;
+            if (index < 0)
+            {
+                index = pokemons.Length - 1;
+            }
+
+            Pokemon = pokemons.ElementAt(index);
         });
     }
 

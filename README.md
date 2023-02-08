@@ -348,9 +348,11 @@ class PokemonViewModel : INotifyPropertyChanged {
 
     public ICommand UpdateCommand { get; set; }
 
-    public PokemonViewModel() {
+    public PokemonViewModel()
+    {
         Pokemon = new Pokemon { Name = "Pikachu", Level = 5, Type = "Electric" };
-        UpdateCommand = new Command(() => {
+        UpdateCommand = ReactiveCommand.Create(() =>
+        {
             Pokemon.Name = "Charizard";
             Pokemon.Level = 50;
             Pokemon.Type = "Fire/Flying";
@@ -365,7 +367,7 @@ class PokemonViewModel : INotifyPropertyChanged {
 }
 ```
 
-- Dans votre fichier XAML (appelé `PokemonView.xaml`), définissez les liaisons de données pour relier les propriétés de votre vue-modèle aux contrôles de votre vue.
+- Dans votre fichier XAML (appelé `PokemonView.axaml`), définissez les liaisons de données pour relier les propriétés de votre vue-modèle aux contrôles de votre vue.
   
 ```XML
 <TextBox Text="{Binding Pokemon.Name}" />
@@ -374,7 +376,7 @@ class PokemonViewModel : INotifyPropertyChanged {
 <Button Content="Update" Command="{Binding UpdateCommand}" />
 ```
 
-- Dans votre fichier code-behind (appelé `PokemonView.xaml.cs`), définissez la propriété DataContext de votre vue pour qu'elle fasse référence à votre vue-modèle.
+- Dans votre fichier code-behind (appelé `PokemonView.axaml.cs`), définissez la propriété DataContext de votre vue pour qu'elle fasse référence à votre vue-modèle.
   
 ```csharp
 public PokemonView() {

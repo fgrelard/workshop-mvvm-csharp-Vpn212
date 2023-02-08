@@ -2,7 +2,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 
-using CraftLR.Exercice7.Views;
+using CraftLR.Exercice8.Views;
 
 namespace CraftLR.Exercice8;
 
@@ -17,7 +17,7 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            //desktop.MainWindow = new TodoItemView();
+            desktop.MainWindow = new PokemonView();
         }
 
         base.OnFrameworkInitializationCompleted();

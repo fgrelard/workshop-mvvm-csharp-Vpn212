@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/src/CraftLR.App/CraftLR.App.csproj",
+                "${workspaceFolder}/src/CraftLR.Exercice8/CraftLR.Exercice8.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/src/CraftLR.App/CraftLR.App.csproj",
+                "${workspaceFolder}/src/CraftLR.Exercice8/CraftLR.Exercice8.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

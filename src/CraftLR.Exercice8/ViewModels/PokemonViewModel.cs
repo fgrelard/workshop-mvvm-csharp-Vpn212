@@ -1,6 +1,4 @@
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 using CraftLR.Exercice8.Models;
@@ -13,6 +11,7 @@ namespace CraftLR.Exercice8.ViewModels;
 public class PokemonViewModel : ReactiveObject
 {
     private Pokemon _pokemon;
+
     public Pokemon Pokemon
     {
         get => _pokemon;

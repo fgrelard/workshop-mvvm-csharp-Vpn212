@@ -10,7 +10,7 @@ using ReactiveUI;
 
 namespace CraftLR.Exercice8.ViewModels;
 
-public class PokemonViewModel : INotifyPropertyChanged
+public class PokemonViewModel : ReactiveObject
 {
     private Pokemon _pokemon;
     public Pokemon Pokemon
@@ -18,8 +18,7 @@ public class PokemonViewModel : INotifyPropertyChanged
         get => _pokemon;
         set
         {
-            _pokemon = value;
-            OnPropertyChanged();
+            this.RaiseAndSetIfChanged(ref _pokemon, value);
         }
     }
 
@@ -38,13 +37,20 @@ public class PokemonViewModel : INotifyPropertyChanged
 
         DisplayNextPokemonCommand = ReactiveCommand.Create(() =>
         {
-            index = (index + 1) % pokemons.Length;
+            index = index + 1;
+
+            if (index == pokemons.Length)
+            {
+                index = 0;
+            }
+
             Pokemon = pokemons.ElementAt(index);
         });
 
         DisplayPreviousPokemonCommand = ReactiveCommand.Create(() =>
         {
             index = index - 1;
+
             if (index < 0)
             {
                 index = pokemons.Length - 1;
@@ -52,12 +58,5 @@ public class PokemonViewModel : INotifyPropertyChanged
 
             Pokemon = pokemons.ElementAt(index);
         });
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

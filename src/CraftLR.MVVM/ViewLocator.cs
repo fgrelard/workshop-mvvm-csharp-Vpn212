@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
@@ -9,15 +10,23 @@ namespace CraftLR.MVVM;
 
 public class ViewLocator : IDataTemplate
 {
-    public IControl Build(object data)
+    public Control Build(object? data)
     {
-        var name = data.GetType().FullName!.Replace("ViewModel", "View");
-        var type = Type.GetType(name);
+        if (data is not null)
+        {
+            var name = data.GetType().FullName!.Replace("ViewModel", "View");
+            var type = Type.GetType(name);
 
-        return type != null ? (Control)Activator.CreateInstance(type)! : (IControl)new TextBlock { Text = "Not Found: " + name };
+            if (type != null)
+            {
+                return (Control)Activator.CreateInstance(type)!;
+            }
+            return new TextBlock { Text = "Not Found: " + name };
+        }
+        return new TextBlock { Text = "Data is null " };
     }
 
-    public bool Match(object data)
+    public bool Match(object? data)
     {
         return data is ViewModelBase;
     }

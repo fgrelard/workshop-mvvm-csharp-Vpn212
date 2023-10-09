@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
@@ -10,11 +10,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="0.10.18"/>
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.18"/>
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.18"/>
-        <PackageReference Include="XamlNameReferenceGenerator" Version="1.5.1"/>
-        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.18"/>
+        <PackageReference Include="Avalonia" Version="11.0.4"/>
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.4"/>
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.4"/>
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.4"/>
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.4"/>
         <PackageReference Include="ReactiveUI.Fody" Version="18.4.20"/>
     </ItemGroup>
 </Project>

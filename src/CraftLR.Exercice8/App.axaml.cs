@@ -6,7 +6,7 @@ using CraftLR.Exercice8.Views;
 
 namespace CraftLR.Exercice8;
 
-public partial class App : Application
+public class App : Application
 {
     public override void Initialize()
     {

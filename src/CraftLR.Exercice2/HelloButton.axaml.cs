@@ -1,7 +1,4 @@
-using System;
-
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 
 namespace CraftLR.Exercice2;
 

@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
@@ -14,15 +13,17 @@ public class ViewLocator : IDataTemplate
     {
         if (data is not null)
         {
-            var name = data.GetType().FullName!.Replace("ViewModel", "View");
-            var type = Type.GetType(name);
+            string name = data.GetType().FullName!.Replace("ViewModel", "View");
+            Type? type = Type.GetType(name);
 
             if (type != null)
             {
                 return (Control)Activator.CreateInstance(type)!;
             }
+
             return new TextBlock { Text = "Not Found: " + name };
         }
+
         return new TextBlock { Text = "Data is null " };
     }
 

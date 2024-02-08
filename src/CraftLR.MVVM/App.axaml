@@ -4,7 +4,7 @@
              x:Class="CraftLR.MVVM.App"
              RequestedThemeVariant="Default">
     <Application.DataTemplates>
-        <local:ViewLocator/>
+        <local:ViewLocator />
     </Application.DataTemplates>
 
     <Application.Styles>

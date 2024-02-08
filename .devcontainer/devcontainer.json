@@ -5,8 +5,7 @@
     "build": {
         "dockerfile": "Dockerfile",
         "args": {
-            "VARIANT": "7.0-bullseye",
-            "NODE_VERSION": "none"
+            "VARIANT": "8.0"
         }
     },
     // Features to add to the dev container. More info: https://containers.dev/features.
@@ -19,7 +18,6 @@
             "webPort": "6080",
             "vncPort": "5901"
         },
-        "ghcr.io/devcontainers/features/python:1": {},
         "ghcr.io/devcontainers/features/java:1": {
             "version": "latest"
         },
@@ -30,7 +28,13 @@
             "username": "vscode",
             "uid": "1000",
             "gid": "1000"
-        }
+        },
+        "ghcr.io/devcontainers/features/node:1": {},
+        "ghcr.io/devcontainers/features/git:1": {
+            "version": "latest",
+            "ppa": "false"
+        },
+        "ghcr.io/devcontainers/features/github-cli:1": {}
     },
     // Use 'forwardPorts' to make a list of ports inside the container available locally.
     "forwardPorts": [
@@ -41,7 +45,7 @@
         "post-create-script": "/usr/bin/zsh ./.devcontainer/post-create.sh"
     },
     // Use 'postCreateCommand' to run commands after the container is created.
-    "postStartCommand": "dotnet restore",
+    "postStartCommand": "sudo dotnet workload update && dotnet restore",
     // Configure tool-specific properties.
     "customizations": {
         // Configure properties specific to VS Code.
@@ -89,6 +93,7 @@
             },
             // Add the IDs of extensions you want installed when the container is created.
             "extensions": [
+                "ms-dotnettools.csdevkit",
                 "ms-dotnettools.csharp",
                 "tintoy.msbuild-project-tools",
                 "formulahendry.dotnet-test-explorer",
@@ -101,7 +106,8 @@
                 "leo-labs.dotnet",
                 "fernandoescolar.vscode-solution-explorer",
                 "SonarSource.sonarlint-vscode",
-                "jebbs.plantuml"
+                "jebbs.plantuml",
+                "eamodio.gitlens"
             ]
         }
     },

@@ -12,25 +12,13 @@ public class PokemonViewModel : ReactiveObject
 {
     private Pokemon _pokemon;
 
-    public Pokemon Pokemon
-    {
-        get => _pokemon;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _pokemon, value);
-        }
-    }
-
-    public ICommand DisplayNextPokemonCommand { get; set; }
-    public ICommand DisplayPreviousPokemonCommand { get; set; }
-
     public PokemonViewModel() : this(new PokemonService())
     {
     }
 
     public PokemonViewModel(PokemonService service)
     {
-        var pokemons = service.GetItems().ToArray();
+        Pokemon[] pokemons = service.GetItems().ToArray();
         int index = 0;
         Pokemon = pokemons.ElementAt(index);
 
@@ -58,4 +46,13 @@ public class PokemonViewModel : ReactiveObject
             Pokemon = pokemons.ElementAt(index);
         });
     }
+
+    public Pokemon Pokemon
+    {
+        get => _pokemon;
+        set => this.RaiseAndSetIfChanged(ref _pokemon, value);
+    }
+
+    public ICommand DisplayNextPokemonCommand { get; set; }
+    public ICommand DisplayPreviousPokemonCommand { get; set; }
 }

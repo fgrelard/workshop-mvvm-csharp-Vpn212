@@ -2,13 +2,8 @@ namespace CraftLR.Exercice7;
 
 public class HelloButtonViewModel : HelloButtonViewModelBase
 {
-    private string _buttonCaption;
+    private string _buttonCaption = "Hello!";
     private int _numberOfClicks;
-    public HelloButtonViewModel()
-    {
-        _buttonCaption = "Hello!";
-        _numberOfClicks = 0;
-    }
 
     public string ButtonCaption
     {

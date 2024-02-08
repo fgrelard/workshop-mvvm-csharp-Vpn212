@@ -1,5 +1,3 @@
-using System;
-
 using Avalonia.Controls;
 
 using CraftLR.Exercice8.Services;

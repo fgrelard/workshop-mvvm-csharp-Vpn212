@@ -7,5 +7,5 @@ public enum Type
     Eau,
     Insecte,
     Normal,
-    Electrique
+    Electrique,
 }

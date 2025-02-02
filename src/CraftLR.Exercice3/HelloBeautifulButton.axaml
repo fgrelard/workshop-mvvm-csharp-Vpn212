@@ -1,24 +1,4 @@
 <Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        x:Class="CraftLR.Exercice3.HelloBeautifulButton" Title="Hello Beautiful Button !" TransparencyLevelHint="AcrylicBlur"
-        Background="Transparent">
-
-        <DockPanel VerticalAlignment="Center" HorizontalAlignment="Center" Height="250">
-        <Button>
-           <Button.Styles>
-               <Style Selector="Button">
-                   <Setter Property="FontSize" Value="20"/>
-                    <Setter Property="FontWeight" Value="Bold"/>
-                    <Setter Property="Background" Value="#eeeeee"/>    
-           </Style>
-           <Style Selector="Image">
-                        <Setter Property="Width" Value="100"/>
-            <Setter Property="ZIndex" Value="-100"/>         
-           </Style>
-           </Button.Styles>
-            <StackPanel>
-                <Image Source="../Assets/logo.png" />   
-            <TextBlock> Hello Beautiful ;)</TextBlock>
-        </StackPanel>
-        </Button>
-    </DockPanel>
+        x:Class="CraftLR.Exercice3.HelloBeautifulButton" Title="Hello Beautiful Button !">
+    <DockPanel VerticalAlignment="Center" HorizontalAlignment="Center" />
 </Window>

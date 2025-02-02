@@ -1,12 +1,11 @@
 <Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="CraftLR.Exercice6.Cercle" Title="Binding two way" Height="600" Width="500">
     <StackPanel Orientation="Vertical">
-        <Slider Name="RadiusSlider" Minimum="0" Maximum="500" TickFrequency="10" IsSnapToTickEnabled="True" Value="0"/>
+        <Slider Name="RadiusSlider" Minimum="0" Maximum="500" TickFrequency="10" IsSnapToTickEnabled="True" />
         <Panel Width="500" Height="500" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Ellipse Name="CentralEllipse" Fill="Black"
-                     Height="{Binding Value, ElementName=RadiusSlider}"
                      Width="{Binding RelativeSource={RelativeSource Self},Path=Height}" />
         </Panel>
-        <TextBox Text="{Binding Value, ElementName=RadiusSlider, Mode=TwoWay}"/>
+        <TextBox />
     </StackPanel>
 </Window>

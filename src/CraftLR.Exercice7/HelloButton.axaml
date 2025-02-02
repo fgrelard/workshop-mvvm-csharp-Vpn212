@@ -10,7 +10,7 @@
     </Design.DataContext>
 
     <StackPanel>
-        <Button IsEnabled="{Binding Enable}" Content="{Binding Path=ButtonCaption}" Command="{Binding CountClick}" />
+        <Button Content="{Binding Path=ButtonCaption}" Command="{Binding CountClick}" />
     </StackPanel>
 
 </Window>

@@ -304,6 +304,15 @@ class Pokemon {
 }
 ```
 
+- Dans votre fichier code-behind (appelé `PokemonView.axaml.cs`), définissez la propriété DataContext de votre vue pour qu'elle fasse référence à votre vue-modèle (déjà fait).
+  
+```csharp
+public PokemonView() {
+    InitializeComponent();
+    DataContext = new PokemonViewModel();
+}
+```
+
 - Etudiez la classe de vue-modèle (appelée `PokemonViewModel`) qui contient les propriétés et les commandes liées à l'interface utilisateur. Cette classe est liée à la vue (appelée `PokemonView`) via une liaison de données. Complétez le code pour changer de Pokémon en fonction de l'index.
 
 ```csharp
@@ -353,20 +362,12 @@ public class PokemonViewModel : ReactiveObject
 <TextBox Text="Type" />
 ```
 
-- Dans votre fichier code-behind (appelé `PokemonView.axaml.cs`), définissez la propriété DataContext de votre vue pour qu'elle fasse référence à votre vue-modèle.
-  
-```csharp
-public PokemonView() {
-    InitializeComponent();
-    DataContext = new PokemonViewModel();
-}
-```
+1. A l'issue de ces étapes, un clic sur l'un des 2 boutons devrait mettre à jour les informations du Pokémon.
 
-- Lancer votre application et adapter le code pour afficher le portrait du Pokémon.
+2. Adapter le code pour afficher le portrait du Pokémon.
 
-- Modifier la création et la récupération de la liste des Pokémons pour qu'elle ait lieu dans la classe `PokemonService`. Cette classe, bien que minimaliste en terme de fonctionnalité, jouera le rôle de [DAO](https://fr.wikipedia.org/wiki/Objet_d%27acc%C3%A8s_aux_donn%C3%A9es) pour les Pokémon. Dans un projet réél, les DAO accèderaient à la base de données et constitueraient la troisième couche du modèle trois tiers. Souvent, l'écriture des DAO est faite en utilisant des mapping objet/relationnel comme [NHibernate](https://nhibernate.info/).
+3. Modifier la création et la récupération de la liste des Pokémons pour qu'elle ait lieu dans la classe `PokemonService`. Cette classe, bien que minimaliste en terme de fonctionnalité, jouera le rôle de [DAO](https://fr.wikipedia.org/wiki/Objet_d%27acc%C3%A8s_aux_donn%C3%A9es) pour les Pokémon. Dans un projet réél, les DAO accèderaient à la base de données et constitueraient la troisième couche du modèle trois tiers. Souvent, l'écriture des DAO est faite en utilisant des mapping objet/relationnel comme [NHibernate](https://nhibernate.info/).
 
-
-Cet exemple, permet de comprendre plus en détail le pattron MVVM avec l'utilisation de chaque couche. Pour aller plus loin, vous pouvez ajouter une vue liste de Pokémons avec la possibilité de choisir celui dont on souhaite voir la fiche descriptive.
+4. Pour aller plus loin, vous pouvez ajouter une vue liste de Pokémons avec la possibilité de choisir celui dont on souhaite voir la fiche descriptive.
 
 

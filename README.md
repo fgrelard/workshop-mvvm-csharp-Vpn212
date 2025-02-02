@@ -33,19 +33,19 @@ MVVM signifie Model-View-ViewModel, où le Modèle représente les services, des
 
 Chacun des exemples donnés pourra sans problème remplacer la vue en XAML (ciblant WPF, UWP, Xamarin Forms ou AvaloniaUI) sans toucher au code des deux autres couches.
 
-La première chose à faire est de créer un fork de ce dépôt. Pour ce faire, rendez-vous sur le lien suivant :
+La première chose à faire est de créer un fork de ce dépôt.
 
-<[https://classroom.github.com/a/VYF3szeN](https://classroom.github.com/a/IJWGBJpN)>
 
-GitHub va vous créer un dépôt contenant un fork de ce dépôt. Vous apparaîtrez automatiquement comme contributeur de ce projet pour y pousser votre travail. Clonez localement votre fork et ouvrez le avec Visual Studio Code.
+Le code de départ de ce dépôt est basé sur celui de [l'environnement de distant de développement d'application graphique en C#](https://github.com/CraftLR/RemoteDevelopmentCsharpWithAvaloniaUI). Il explique comment coder au-travers d'un conteneur Docker directement depuis Microsoft Visual Studio Code, et utiliser diverses métriques de code.
 
-Le code de départ de ce dépôt est basé sur celui de [l'environnement de distant de développement d'application graphique en C#](https://github.com/CraftLR/RemoteDevelopmentCsharpWithAvaloniaUI). Cet environnement, permet de disposer de l'ensemble des outils nécessaires au développement d'application graphique et à la gestion de la qualité de code. Si vous n'avez pas pris le temps de le tester, il est conseillé de le faire avant de commencer cet atelier même si les éléments les plus important seront rappelés.
 
 ### Lancement de l'application graphique d'exemple
 
 Pour commencer à tester AvaloniaUI, deux applications très simples sont présente dans le présent dépôt git. La première est juste une fenêtre avec 3 boutons pour illustrer les concepts de base d'AvaloniaUI. Elle s'appelle `CraftLR.UI` et se trouve dans le dossier `src/CraftLR.UI`.
 
-Pour pouvoir la tester, ouvrir un terminal (avec le raccourci clavier  <kbd>Ctrl/Cmd</kbd>+<kbd>Shift</kbd>+<kbd>²</kbd>) et tapez les commandes suivantes :
+Pour pouvoir la tester, effectuez le build et exécutez le programme avec l'éxecution sans débogage (<kbd>Ctrl/Cmd</kbd>+<kbd>F5</kbd>.
+
+Une autre option est d' ouvrir un terminal (avec le raccourci clavier  <kbd>Ctrl/Cmd</kbd>+<kbd>ù</kbd>) et tapez les commandes suivantes :
 
 ```sh
 cd src/CraftLR.UI
@@ -54,23 +54,6 @@ dotnet build
 dotnet run
 ```
 
-Les deux premières commandes préparent le projet et le compile. La dernière permet de l'exécuter. Le programme étant graphique, la commande vous rendra la main que lorsque vous aurez fermer la fenêtre. Actuellement, la fenêtre est lancée dans le conteneur, pour la voir, il faut pouvoir accéder à l'environnement graphique. Dans la prochaine étape vous allez découvrir comment voir la fenêtre de l'application graphique.
-
-Pour lancer une application graphique, il faut disposer dans le conteneur de développement d'un environnement graphique (un serveur X) ainsi que d'un gestionnaire de fenêtrage. Pour éviter le gaspillage de ressource, il faut utiliser le gestionnaire le plus léger possible. C'est pour cela que l'on utilisera [Fluxbox](http://fluxbox.org/). Pour rendre visible l’environnement graphique, on utilisera une version de VNC appelé noVNC qui fonctionne directement dans un navigateur.
-
-Pour ouvrir, noVNC et voir les applications graphiques en cours d'exécution, ouvrez la vue `Ports` et cliquez sur l’icône globe à coté de l'adresse locale `localhost:6080`. Entrez le mot de passe `vscode` et validez.
-
-Si votre application graphique utilise la console, les messages s'afficheront directement dans le terminal dans lequel vous avez lancé votre application.
-
-Si vous avez lancé la commande `dotnet run` dans le dossier du projet `CraftLR.UI`, vous devriez avoir l'affichage suivant :
-
-![vue_fluxbox_novnc](src/CraftLR.Exercice1/Assets/vue_fluxbox_novnc.png)
-
-La fenêtre est bien visible et si vous interagissez avec les boutons, les messages s'affichent bien dans le terminal dans lequel le programme a été lancé :
-
-![vue_terminal_programme_exemple](src/CraftLR.Exercice1/Assets/vue_terminal_programme_exemple.png)
-
-Pour terminer l'application graphique, il suffit de la fermer normalement dans la session noVNC.
 
 ### Premières applications graphiques : composants et événements
 
@@ -149,19 +132,16 @@ L'utilisation de la classe associée à la vue XAML permet de facilement ajouter
 ### Bindings
 Les bindings (ou liaison) est un mécanisme permettant d'associer des propriétés pour que la modification de l'une implique la modification de la seconde. C'est le mécanisme de base qui permettra par la suite de lier les couches d'une application MVVM.
 
-Pour en savoir plus sur les bindings, vous pouvez aller consulter la page suivante : <https://docs.avaloniaui.net/docs/getting-started/programming-with-avalonia/data-binding>
+Pour en savoir plus sur les bindings, vous pouvez aller consulter la page suivante : <https://docs.avaloniaui.net/docs/0.10.x/data-binding/bindings>
 
 Avant de voir ces aspects avancés, commençons par découvrir les mécanismes simples de liaison.
 
-Voici les éléments les plus important à connaître pour utiliser les bindings :
+```csharp
+<BALISE Name="AutreElement">
+<BALISE Name="MaBalise" Propriete={Binding Text, ElementName="AutreElement", Mode=BindingMode}>
+```
 
-- **Objet source de liaison** - L'objet par lequel on peut obtenir le chemin d'accès à la propriété source de liaison.
-
-- **Objet cible de liaison** - L'objet dont la propriété (Attached, Style ou Direct) sert de cible pour la liaison. L'objet cible ne peut être que de la classe dérivée de `AvaloniaObject`(ce qui signifie qu'il peut s'agir de n'importe lequel des éléments visuels d'Avalonia).
-
-- **Chemin de liaison** - Chemin de l'objet source à la propriété source. Le chemin se compose de liens de chemin, chacun pouvant être une propriété normale(C#) ou une propriété Avalonia. Dans les liaisons XAML, les propriétés d'Avalonia doivent être entre parenthèses.
-
-- **la proriété `Target`** - ne peut être que l'un des types de propriété Attached, Style ou Direct.
+Ainsi, la balise `MaBalise` aura la valeur de sa propriété qui sera identique à la propriété `Text` de la balise `AutreElement`. Tout changement de `Text` dans `AutreElement` sera répercuté dans la propriété de `MaBalise`.
 
 - `BindingMode` peut être:
     - `OneWay` - lorsque la source est modifiée, le changement est propagé vers la cible.
@@ -171,22 +151,13 @@ Voici les éléments les plus important à connaître pour utiliser les bindings
     - `Default` - repose sur le mode de liaison préféré de la propriété cible. 
 
 - **Convertisseur** - nécessaire uniquement si la valeur source et la valeur cible sont de type différents. Le convertisseur est utilisé pour convertir les valeurs de la source à la cible et vice versa. Pour les liaisons habituelles, le convertisseur doit implémenter `IValueConverter`.
-  
-Il y a aussi les `MultiBinding`. Un `MultiBinding` suppose plusieurs sources de liaison et toujours la même cible de liaison unique. Les multiples sources sont combinées en une seule cible par un convertisseur spécial qui implémente `IMultiValueConverter`.
 
-L'une des parties complexes des bindings est qu'il existe plusieurs façons de spécifier l'objet source. Voici la description des différentes méthodes de spécification de l'objet source :
+Il existe plusieurs façons de spécifier l'objet source du binding. En voici deux:
 
-- Si vous ne spécifiez pas du tout l'objet source - dans ce cas, l'objet source par défaut sera donné par le `DataContext` de la cible. Le `DataContext` se propage automatiquement vers le bas de l'arborescence visuelle, sauf modification explicite (et à quelques exceptions près).
+- Si vous ne spécifiez pas du tout l'objet source - dans ce cas, l'objet source par défaut sera donné par le `DataContext` de la cible. Le `DataContext` peut faire référence à des objets ou fonctions dans un fichier C# (nous verrons cela plus tard).
 
-- Vous pouvez spécifier la source explicitement en XAML en l'affectant à la propriété `Source` du binding. Vous pouvez l'affecter directement en C#, ou en XAML.
+- Comme déjà dit, il existe la propriété `ElementName` qui peut être utilisée pour rechercher l'élément source par son nom (propriété `Name`).
 
-- Il existe la propriété `ElementName` qui peut être utilisée pour rechercher l'élément source dans le même fichier XAML par son nom (propriété `Name`).
-- Il existe aussi la propriété `RelativeSource` qui permet de localiser l'objet source en fonction de sa propriété `Mode` :
-    - Pour `Mode==Self`, l'objet source sera le même que l'objet cible.
-    - `Mode==TemplatedParent` ne peut être utilisé que dans un `ControlTemplate` de certain Avalonia `TemplatedControl`.
-    - `Mode==FindAncestor` signifie que l'objet source sera recherché dans l'arborescence visuelle. La propriété `AncestorType` doit également être utilisée dans ce mode, pour spécifier le type de l'objet source à rechercher. Si rien d'autre n'est spécifié, le premier objet de ce type deviendra l'objet source. Si `AncestorLevel` est défini, il spécifie que le Nème objet ancêtre de ce type sera utilisé comme source de la liaison.
-
-Dans Avalonia, la propriété `RelativeSource` peut être définie sur `TreeType.Logical`(par défaut `TreeType.Visual`). Dans ce cas, les ancêtres sont recherchés dans l'arbre logique (qui est plus clairsemé et moins complexe).
 
 De manière générale, les bindings sont fait directement dans le fichier XAML en indiquant pour la propriété cible avec quelle source elle est liée. La syntaxe d'un tel binding aura la forme `ProprieteCible = "{Binding SpecificationDuChemin}"`. La spécification du chemin utilise la syntaxe décrite ci-avant.
 
@@ -204,7 +175,7 @@ Ouvrez donc le fichier `HelloUI.axaml` et le modifier pour respecter les contrai
 
   * Un champ de saisi textuel (`TextBox`) dont le nom (`Name`) doit être `"NameTB"`.
 
-  * Un bloc de texte nommé `"GreetingTB"`.
+  * Un bloc de texte dont le nom est `"GreetingTB"`.
 
 * Le contenu du bloc `GreetingTB` doit être lié à celui du bloc `NameTB`. Pour ce faire, il faut préciser le nom de l'objet avec la directive `ElementName` et le nom de la propriété source avec la directive `Path`.
 
@@ -264,7 +235,7 @@ Title="Hello Button !" Height="100" Width="250" >
 Le fichier code-behind associé `HelloButton.axaml.cs` est modifié pour injecter un object de la classe `HelloButtonViewModel` en tant que `DataContext` :
 
 ```csharp
-public partial class HelloButton : Window
+public class HelloButton : Window
 {
     public HelloButton()
     {
@@ -317,13 +288,13 @@ Modifiez la Vue-Modèle pour que le bouton se désactive quand il a été action
 
 **Diagramme de classes :**
 
-![Diagramme de la classe](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/CraftLR/workshop-MVVM-csharp/main/src/CraftLR.Exercice7/Assets/exercice7.puml)
+![Diagramme de classe](src/CraftLR.Exercice8/Assets/class.png)
 
 Ce diagramme est généré avec l'outil PlantUML. La convention graphique des schémas UML varie en fonction de l'outil utilisé. Vous pouvez retrouver la documentation de PlantUML ainsi que la représentation visuelle adoptée sur cette page : [https://plantuml.com/fr/class-diagram](https://plantuml.com/fr/class-diagram).
 
-Travaille à faire : 
+Travail à faire : 
 
-- Créez une classe de modèle (appelée "Pokemon") qui contient les propriétés de données pour un Pokémon.
+- Etudiez la classe de modèle (appelée "Pokemon") qui contient les propriétés de données pour un Pokémon.
 
 ```csharp
 class Pokemon {
@@ -333,43 +304,53 @@ class Pokemon {
 }
 ```
 
-- Créez une classe de vue-modèle (appelée `PokemonViewModel`) qui contient les propriétés et les commandes liées à l'interface utilisateur. Cette classe est liée à la vue (appelée `PokemonView`) via une liaison de données.
+- Etudiez la classe de vue-modèle (appelée `PokemonViewModel`) qui contient les propriétés et les commandes liées à l'interface utilisateur. Cette classe est liée à la vue (appelée `PokemonView`) via une liaison de données. Complétez le code pour changer de Pokémon en fonction de l'index.
 
 ```csharp
-class PokemonViewModel : INotifyPropertyChanged {
+public class PokemonViewModel : ReactiveObject
+{
     private Pokemon _pokemon;
-    public Pokemon Pokemon {
-        get { return _pokemon; }
-        set {
-            _pokemon = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public ICommand UpdateCommand { get; set; }
 
     public PokemonViewModel()
     {
-        _pokemon = new Pokemon { Name = "Pikachu", Level = 5, Type = "Electric" };
+        Pokemon[] pokemons = new[]
+        {
+            new Pokemon { Name = "Salameche", Level = 10, Type = "Feu" },
+            new Pokemon { Name = "Dracaufeu", Level = 20, Type = "Feu" }
+        };
 
-        UpdateCommand = ReactiveCommand.Create(() => Pokemon = new Pokemon { Name = "Charizard", Level = 50, Type = "Fire/Flying" });
+        int index = 0;
+        Pokemon = pokemons.ElementAt(index);
+
+        DisplayNextPokemonCommand = ReactiveCommand.Create(() =>
+        {
+            // A Completer
+        });
+
+        DisplayPreviousPokemonCommand = ReactiveCommand.Create(() =>
+        {
+            //A Completer
+        });
     }
 
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected void OnPropertyChanged([CallerMemberName] string propertyName = null) {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    public Pokemon Pokemon
+    {
+        get => _pokemon;
+        set => this.RaiseAndSetIfChanged(ref _pokemon, value); // Si la valeur change, notification de la vue
     }
+
+    public ICommand DisplayNextPokemonCommand { get; set; }
+    public ICommand DisplayPreviousPokemonCommand { get; set; }
+}
 }
 ```
 
 - Dans votre fichier XAML (appelé `PokemonView.axaml`), définissez les liaisons de données pour relier les propriétés de votre vue-modèle aux contrôles de votre vue.
   
 ```XML
-<TextBox Text="{Binding Pokemon.Name}" />
-<TextBox Text="{Binding Pokemon.Level}" />
-<TextBox Text="{Binding Pokemon.Type}" />
-<Button Content="Update" Command="{Binding UpdateCommand}" />
+<TextBox Text="Name" />
+<TextBox Text="Level" />
+<TextBox Text="Type" />
 ```
 
 - Dans votre fichier code-behind (appelé `PokemonView.axaml.cs`), définissez la propriété DataContext de votre vue pour qu'elle fasse référence à votre vue-modèle.

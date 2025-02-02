@@ -10,6 +10,6 @@ public partial class PokemonView : Window
     public PokemonView()
     {
         InitializeComponent();
-        DataContext = new PokemonViewModel(new PokemonService());
+        DataContext = new PokemonViewModel();
     }
 }
